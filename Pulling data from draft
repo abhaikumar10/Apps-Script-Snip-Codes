@@ -1,0 +1,12 @@
+function myFurgereweeon() {
+  
+  var draftId = 'r27080571017759370';  // Abhay
+
+var dr = GmailApp.getDrafts()[0];
+  id=dr.getId()
+  Logger.log(id);
+
+
+  var draft = GmailApp.getDraft(id).getMessage().getBody();
+
+  Logger.log(draft);
