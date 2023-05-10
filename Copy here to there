@@ -1,0 +1,11 @@
+function logRow(){
+let i=1;
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("sheet1");
+  var source = ss.getRange(i,1,1,47);
+  var ts = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("sheet 2");
+  var lr = ts.getLastRow();
+  var target = ts.getRange(lr+1,1,1,47);
+  source.copyTo(target,SpreadsheetApp.CopyPasteType.PASTE_VALUES,false);
+  //Logger.log(val);
+  //SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Logs").appendRow(val);
+}
