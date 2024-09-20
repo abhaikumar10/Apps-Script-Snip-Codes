@@ -1,0 +1,52 @@
+
+function e2s() {
+  //const sheetId = "1LPXSA9-Ae_J4g8M39vf8xiOEVvpGi64a3NzcS8JZsvw";
+let emailSubject= "my email with ls in attachment"
+  const threads = GmailApp.search('subject:"' + emailSubject + '"');
+  if (threads.length == 0) {
+    var ee="No emails found with the subject: " + emailSubject
+    Logger.log(ee);
+    var dd={};
+    dd.sourceID=emailSubject;
+    logData(dd,ee,null);
+    return;
+  } 
+  const thread = threads[0];
+  const messages = thread.getMessages();
+  const latestMessage = messages[messages.length - 1];
+  
+  // Get attachments from the email
+  const attachments = latestMessage.getAttachments();
+  let excelFile;
+  // Find the Excel file in the attachments
+  for (const attachment of attachments) {
+    if (attachment.getContentType() === MimeType.MICROSOFT_EXCEL || attachment.getContentType() === MimeType.MICROSOFT_EXCEL_LEGACY) {
+      excelFile = attachment;
+      break;
+    }
+  }  if (!excelFile) { 
+    var ee="No Excel attachment found in the email. " + emailSubject
+    Logger.log(ee);
+    var dd={};
+    dd.sourceID=emailSubject;
+    logData(dd,ee,null);
+    return;
+  }
+  
+  // Create a new Google Sheet from the Excel file
+  const blobb = excelFile.copyBlob().setContentType(MimeType.MICROSOFT_EXCEL);
+  const tempFile = DriveApp.createFile(blobb);
+
+Logger.log(tempFile.getId())
+  var excelFileName = tempFile.getId(); //File name of the file to be converted
+  var files = DriveApp.getFileById(excelFileName); 
+   var blob = files.getBlob();
+  var config = {
+    title:  files.getName(), //sets the title of the converted file
+    parents: [{id: "1CMaligSguuqDapwYOvs6OTHWPfqHp8kj"}], //drive folderid
+    mimeType: MimeType.GOOGLE_SHEETS
+  };
+  var spreadsheet = Drive.Files.insert(config, blob);
+  Logger.log(spreadsheet.id);
+  return spreadsheet.id; //Displays the file ID
+}
