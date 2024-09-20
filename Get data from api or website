@@ -1,0 +1,38 @@
+  function npci() {  
+   a= new Date()  
+   x=Utilities.formatDate(a, Session.getScriptTimeZone(), 'MMMM+dd'); 
+   y=Utilities.formatDate(a, Session.getScriptTimeZone(), 'yyyy'); 
+  var url = 'https://website.rbi.org.in/documents/87730/38862282/Daily+payment+systems+data+'+x+'%2C+'+y+'.xlsx';
+  
+// Set up headers to mimic a request from a modern browser
+  var headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Referer': 'https://www.google.com/',
+    'Connection': 'keep-alive'
+  };
+
+  // Define options for the URL fetch request
+  var options = {
+    'method': 'get',
+    'headers': headers,
+    'muteHttpExceptions': true
+  };
+
+  // Fetch the file from the URL with custom headers
+  var response = UrlFetchApp.fetch(url, options);
+
+  // Check the response code and content
+  Logger.log(response.getResponseCode());
+  Logger.log(response.getContentText());
+
+  // Convert the response to a blob if the request is successful
+  if (response.getResponseCode() === 200) {
+    var xlsxBlob = response.getBlob();
+
+return(xlsxBlob);
+
+}
+ 
+  }
