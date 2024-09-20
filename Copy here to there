@@ -6,6 +6,9 @@ let i=1;
   var lr = ts.getLastRow();
   var target = ts.getRange(lr+1,1,1,47);
   source.copyTo(target,SpreadsheetApp.CopyPasteType.PASTE_VALUES,false);
-  //Logger.log(val);
+    //or
+    //let data =source.getValues();
+    //target.setValues(data); 
+
   //SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Logs").appendRow(val);
 }
